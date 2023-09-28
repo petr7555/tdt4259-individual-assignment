@@ -1,0 +1,14 @@
+{
+  "name": "tdt4259-individual-assignment",
+  "version": "1.0.0",
+  "description": "Fictional data science project",
+  "scripts": {
+    "generate:pdf": "node generate-pdf.js",
+    "generate:pdf:watch": "node generate-pdf.js --watch"
+  },
+  "author": "Petr Janik",
+  "license": "ISC",
+  "dependencies": {
+    "md-to-pdf": "^5.2.4"
+  }
+}
