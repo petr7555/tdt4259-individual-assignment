@@ -4,6 +4,8 @@ A template for design docs for machine learning systems based on this [post](htt
 
 Note: This template is a guideline / checklist and is **not meant to be exhaustive**. The intent of the design doc is to help you think better (about the problem and design) and get feedback. Adopt whichever sections—and add new sections—to meet this goal. View other templates, examples [here](#other-templates-examples-etc).
 
+Purpose: to help the author think deeply about the problem and solution and get feedback.
+
 ---
 ## 1. Overview
 
@@ -11,9 +13,14 @@ A summary of the doc's purpose, problem, solution, and desired outcome, usually 
 
 ## 2. Motivation
 Why the problem is important to solve, and why now.
+Why should we solve this problem? Why now?
+
+Explain the motivation for your proposal and convince readers of its importance. What is the customer or business benefit? If you’re building a replacement system, explain why improvements to the existing system will not work as well. If there are alternatives, explain why your proposed system is better.
 
 ## 3. Success metrics
 Usually framed as business goals, such as increased customer engagement (e.g., CTR, DAU), revenue, or reduced cost.
+
+What are the success criteria?
 
 ## 4. Requirements & Constraints
 Functional requirements are those that should be met to ship the project. They should be described in terms of the customer perspective and benefit. (See [this](https://eugeneyan.com/writing/ml-design-docs/#the-why-and-what-of-design-docs) for more details.)
@@ -22,8 +29,14 @@ Non-functional/technical requirements are those that define system quality and h
 
 Constraints can come in the form of non-functional requirements (e.g., cost below $`x` a month, p99 latency < `y`ms)
 
+What are the requirements and constraints? (Functional and technical requirements)
+
 ### 4.1 What's in-scope & out-of-scope?
 Some problems are too big to solve all at once. Be clear about what's out of scope.
+
+What is in-scope vs out-of-scope?
+
+### 4.2 * What are our assumptions?
 
 ## 5. Methodology
 
@@ -31,13 +44,19 @@ Some problems are too big to solve all at once. Be clear about what's out of sco
 
 How will you frame the problem? For example, fraud detection can be framed as an unsupervised (outlier detection, graph cluster) or supervised problem (e.g., classification).
 
+Problem statement: Declare how you’ll frame the problem.
+
 ### 5.2. Data
 
 What data will you use to train your model? What input data is needed during serving?
 
+Data: Describe the data and entities your data science model will be using.
+
 ### 5.3. Techniques
 
 What machine learning techniques will you use? How will you clean and prepare the data (e.g., excluding outliers) and create features?
+
+Techniques: Outline the data science techniques you’ll try/tried. Include baselines for comparison.
 
 ### 5.4. Experimentation & Validation
 
@@ -45,9 +64,13 @@ How will you validate your approach offline? What offline evaluation metrics wil
 
 If you're A/B testing, how will you assign treatment and control (e.g., customer vs. session-based) and what metrics will you measure? What are the success and [guardrail](https://medium.com/airbnb-engineering/designing-experimentation-guardrails-ed6a976ec669) metrics?
 
+Validation and experimentation: Explain how you’ll evaluate models offline. Explain your choice of evaluation metrics(s)
+
 ### 5.5. Human-in-the-loop
 
 How will you incorporate human intervention into your ML system (e.g., product/customer exclusion lists)?
+
+Human-in-the-loop: Indicate how human intervention can be incorporated into your system.
 
 ## 6. Implementation
 
@@ -57,9 +80,12 @@ How will you incorporate human intervention into your ML system (e.g., product/c
 
 Start by providing a big-picture view. [System-context diagrams](https://en.wikipedia.org/wiki/System_context_diagram) and [data-flow diagrams](https://en.wikipedia.org/wiki/Data-flow_diagram) work well.
 
+High-level design: Data stores, pipelines(e.g., data preparation,feature engineering, training), and serving.
 ### 6.2. Infra
 
 How will you host your system? On-premise, cloud, or hybrid? This will define the rest of this section
+
+Infra + scalability: List the infra options and your final choice.
 
 ### 6.3. Performance (Throughput, Latency)
 
@@ -69,17 +95,21 @@ How will your system meet the throughput and latency requirements? Will it scale
 
 How will your system/application authenticate users and incoming requests? If it's publicly accessible, will it be behind a firewall?
 
+Security: How you’ll secure your application and authenticate users and incoming requests.
 ### 6.5. Data privacy
 
 How will you ensure the privacy of customer data? Will your system be compliant with data retention and deletion policies (e.g., [GDPR](https://gdpr.eu/what-is-gdpr/))?
 
+Data privacy: How you’ll protect and ensure the privacy of customer data.
 ### 6.6. Monitoring & Alarms
 
 How will you log events in your system? What metrics will you monitor and how? Will you have alarms if a metric breaches a threshold or something else goes wrong?
 
+Monitoring + alarms: How you’ll monitor your system performance. List the alarms that will trigger human intervention (e.g., on-call)
 ### 6.7. Cost
 How much will it cost to build and operate your system? Share estimated monthly costs (e.g., EC2 instances, Lambda, etc.)
 
+Cost: Should include labour cost, cost of infrastructure, etc.
 ### 6.8. Integration points
 
 How will your system integrate with upstream data and downstream users?
@@ -88,12 +118,15 @@ How will your system integrate with upstream data and downstream users?
 
 Risks are the known unknowns; uncertainties are the unknown unknows. What worries you and you would like others to review?
 
+Risks and uncertainties: Call them out to the best of your ability. This allows reviewers to help spot design flaws and rabbit holes, and provide feedback on how to avoid/addressthem.
 ## 7. Appendix
 
 ### 7.1. Alternatives
 
 What alternatives did you consider and exclude? List pros and cons of each alternative and the rationale for your decision.
 
+Other stuff: ops strategy (e.g., monitoring, on-call), model rollbacks, quality assurance, extensibility, and
+model footprint and power consumption (if used in mobile apps).
 ### 7.2. Experiment Results
 
 Share any results of offline experiments that you conducted.
