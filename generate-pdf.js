@@ -9,7 +9,7 @@ const designDocPath = 'design-doc.md';
 const generatePdf = async () => {
     const onePagerContent = fs.readFileSync('one-pager.md', 'utf8');
     const designDocContent = fs.readFileSync('design-doc.md', 'utf8');
-    const pageBreak = '<div class="page-break"></div>';
+    const pageBreak = '<div class="page-break"></div>\n\n';
     const allContent = onePagerContent + pageBreak + designDocContent;
 
     const pdf = await mdToPdf({content: allContent}, {

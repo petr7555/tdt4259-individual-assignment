@@ -51,3 +51,9 @@ How to Write Better with The Why, What, How Framework
 https://eugeneyan.com/writing/writing-docs-why-what-how/
 How to write design docs for ML systems
 https://eugeneyan.com/writing/ml-design-docs/
+
+
+Notes
+- high-class imbalance
+- FunPay is European company -> GDPR etc.
+- periodically retrained (new data, new frauds...)
