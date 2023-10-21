@@ -1,2 +1,9 @@
+# Tooling
 node_modules
+.venv
+
+# Generated files
 result*.pdf
+
+# Data
+playground/data

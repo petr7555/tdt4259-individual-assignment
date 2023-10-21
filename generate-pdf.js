@@ -18,8 +18,8 @@ const generatePdf = async () => {
             margin: {
                 top: '20mm',
                 bottom: '30mm',
-                left: '20mm',
-                right: '20mm'
+                left: '18mm',
+                right: '18mm'
             },
             headerTemplate: `
                 <style>
