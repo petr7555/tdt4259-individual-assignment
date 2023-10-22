@@ -37,17 +37,20 @@ This template is a guideline / checklist and is **not meant to be exhaustive**. 
     5. [Human-in-the-loop](#55-human-in-the-loop)
 6. [Implementation](#6-implementation)
     1. [High-level design](#61-high-level-design)
-    2. [Infrastructure & scalability](#62-infrastructure--scalability)
-    3. [Performance](#63-performance)
-    4. [Security](#64-security)
-    5. [Data privacy](#65-data-privacy)
-    6. [Monitoring & alarms](#66-monitoring--alarms)
-    7. [Cost](#67-cost)
-    8. [Integration points](#68-integration-points)
-    9. [Risks & uncertainties](#69-risks--uncertainties)
+    2. [Technological choices](#62-technological-choices)
+    3. [Infrastructure & scalability](#63-infrastructure--scalability)
+    4. [Performance](#64-performance)
+    5. [Security](#65-security)
+    6. [Data privacy](#66-data-privacy)
+    7. [Monitoring & alarms](#67-monitoring--alarms)
+    8. [Cost](#68-cost)
+    9. [Integration points](#69-integration-points)
+    10. [Risks & uncertainties](#610-risks--uncertainties)
 7. [Appendix](#7-appendix)
     1. [Alternatives](#71-alternatives)
-    2. [References](#72-references)
+    2. [Experiment Results](#72-experiment-results)
+    3. [Milestones & timeline](#73-milestones--timeline)
+    4. [References](#74-references)
 
 <div class="page-break"></div>
 
@@ -249,8 +252,6 @@ If you're A/B testing, how will you assign treatment and control (e.g., customer
 
 The data will be split into two parts. 70% will be used for training and 30% will be used for the final validation of the chosen model. To compare various models and their hyperparameters, the training data will be further split using stratified k-fold with 10 folds. This will result in multiple average cross-validated scores. The most relevant metrics are recall and precision. Because of the high class imbalance, accuracy is not a good metric. Area under the precision-recall curve (AUPRC) will be used instead.
 
-Preliminary analysis shows that precision of 95% and recall of 79% are achievable using Random Forest Classifier. The respective AUPRC was 0.85.
-
 #### 5.4.2 After deployment
 
 An A/B test will be conducted. The treatment and control groups will be customer-based and will be assigned randomly. 50% of users will be assigned to the treatment group and 50% to the control group. The treatment group will have the fraud detection enabled, while the control group will not.
@@ -291,17 +292,26 @@ Start by providing a big-picture view. [System-context diagrams](https://en.wiki
 Data stores, pipelines (e.g., data preparation, feature engineering, training), and serving.
 -->
 
-![High-level design](./diagrams/high-level-design.excalidraw.png)
-_Figure 1: High-level design_
+[//]: # (![High-level design]&#40;./diagrams/high-level-design.excalidraw.png&#41;)
+
+<div style="text-align:center;">
+<img style="width:400px;" alt="High-level design" src="./diagrams/high-level-design.excalidraw.png" />
+<p style="font-style:italic;">Figure 1: High-level design</p>
+</div>
+
 
 The model uses data from the product team that are already pre-processed and therefore does not require any data preparation pipeline. All features are available, no new features need to be created. The service does not store any data.
 
 The model will be trained and deployed manually. It is expected that this process will be automated in the future. However, this is out of scope for now.
 
+### 6.2. Technological choices
+
 For training the model, Python low-code machine learning library [Pycaret](https://pycaret.org/) will be used. FunPay does not have a dedicated data science team, therefore, it is important to use a tool that is easy to use for so-called
 _citizen data scientists_. Pycaret is a good choice for this use case.
 
-### 6.2. Infrastructure & scalability
+The trained model will then be deployed in a [Docker](https://www.docker.com/) container as a web service using [FastAPI](https://fastapi.tiangolo.com/).
+
+### 6.3. Infrastructure & scalability
 
 <!--
 How will you host your system? On-premise, cloud, or hybrid? This will define the rest of this section.
@@ -313,7 +323,7 @@ Deploying the fraud detection service there will make the deployment easier, sca
 
 The training will be done on virtual machines in this private cloud.
 
-### 6.3. Performance
+### 6.4. Performance
 
 <!--
 How will your system meet the throughput and latency requirements? Will it scale vertically or horizontally?
@@ -327,7 +337,7 @@ Having the fraud detection service deployed in the same environment as the payme
 
 The model trained in Pycaret can be transpiler to other languages, such as C or Java. This will result in faster inference speed.
 
-### 6.4. Security
+### 6.5. Security
 
 <!--
 How will your system/application authenticate users and incoming requests? If it's publicly accessible, will it be behind a firewall?
@@ -341,7 +351,7 @@ The service does not require authentication, because all incoming requests have 
 
 [Bandit](https://github.com/PyCQA/bandit) will be used to analyze the code for security issues.
 
-### 6.5. Data privacy
+### 6.6. Data privacy
 
 <!--
 How will you protect and ensure the privacy of customer data? Will your system be compliant with data retention and deletion policies (e.g., [GDPR](https://gdpr.eu/what-is-gdpr/))?
@@ -349,7 +359,7 @@ How will you protect and ensure the privacy of customer data? Will your system b
 
 FunPay is a European company. As such, it is subject to the General Data Protection Regulation (GDPR). However, the fraud detection service will not store any data about the users or their transactions. The service will be trained on and later process only numerical input variables which are the result of a PCA transformation and the transaction amount.
 
-### 6.6. Monitoring & alarms
+### 6.7. Monitoring & alarms
 
 <!--
 How you’ll monitor your system performance. 
@@ -364,7 +374,7 @@ The metrics that will be monitored and their thresholds for alerts are:
 - Throughput – < 100 requests per second
 - Error rate – > 0.1%
 
-### 6.7. Cost
+### 6.8. Cost
 
 <!--
 How much will it cost to build and operate your system? Share estimated monthly costs (e.g., EC2 instances, Lambda, etc.)
@@ -386,7 +396,7 @@ there are little additional labor costs associated with the operation of the ser
 -->
 Assuming 4,000,000 transactions per month, the cost of the service is 0.005 EUR per transaction.
 
-### 6.8. Integration points
+### 6.9. Integration points
 
 <!--
 How will your system integrate with upstream data and downstream users?
@@ -395,6 +405,7 @@ How will your system integrate with upstream data and downstream users?
 The payment processing system will send a request to the fraud detection service when a credit card transaction is being processed. The request will contain the transaction amount and the principal components obtained with PCA. The service will respond with a boolean value indicating whether the transaction is considered fraudulent or not.
 
 Sample request:
+
 ```json
 {
   "Amount": 149.62,
@@ -406,13 +417,14 @@ Sample request:
 ```
 
 Sample response:
+
 ```json
 {
   "fraudulent": false
 }
 ```
 
-### 6.9. Risks & uncertainties
+### 6.10. Risks & uncertainties
 
 <!--
 Risks are the known unknowns; uncertainties are the unknown unknowns. Call them out to the best of your ability. This allows reviewers to help spot design flaws and rabbit holes, and provide feedback on how to avoid/address them.
@@ -439,7 +451,7 @@ What alternatives did you consider and exclude? List pros and cons of each alter
 
 #### Google Vertex AI
 
-Google Vertex AI platform has been considered as an alternative. It can be used both for model training and model deployment.
+[Google Vertex AI](https://cloud.google.com/vertex-ai) platform has been considered as an alternative. It can be used both for model training and model deployment.
 
 Training the model requires uploading tha data to Google Cloud. The Google Cloud is well-secured and the data are anonymized through PCA, therefore, from the security and data privacy point of view, this does not pose any risks.
 The model can then be trained using either _AutoML_ or newer _AutoML on Pipelines_. At the time of writing, using
@@ -453,25 +465,37 @@ However, testing of the endpoint showed that the inference speed was very slow a
 Lastly, usage of Google Vertex AI for model training and model deployment resulted in high costs.
 Leveraging existing infrastructure of FunPay to train and deploy the models will reduce the costs significantly.
 
-<!--
 ### 7.2. Experiment Results
 
+<!--
 Share any results of offline experiments that you conducted.
+-->
 
+Experiments show that precision of 95% and recall of 79% are achievable using Random Forest Classifier. The respective AUPRC was 0.85.
+
+<!--
 ### 7.3. Performance benchmarks
 
 Share any performance benchmarks you ran (e.g., throughput vs. latency vs. instance size/count).
+-->
 
-### 7.4. Milestones & Timeline
+### 7.3. Milestones & timeline
 
+<!--
 What are the key milestones for this system and the estimated timeline?
+-->
 
+- January 2024: Start of the project
+- March 2024: Service is deployed as an A/B test
+- April 2024: A/B test is finished, the service is evaluated and potentially deployed to all users
+
+<!--
 ### 7.5. Glossary
 
 Define and link to business or technical terms.
 -->
 
-### 7.2. References
+### 7.4. References
 
 <!--
 Add references that you might have consulted for your methodology.
@@ -479,10 +503,11 @@ Add references that you might have consulted for your methodology.
 
 The template for this design document is based on:
 
+- Yan, Ziyou. (Feb 2021). How to Write Better with The Why, What, How Framework. eugeneyan.com. https://eugeneyan.com/writing/writing-docs-why-what-how/.
 - Yan, Ziyou. (Mar 2021). How to Write Design Docs for Machine Learning Systems. eugeneyan.com. https://eugeneyan.com/writing/ml-design-docs/.
 - Yan, Ziyou. (Mar 2023). ml-design-docs https://github.com/eugeneyan/ml-design-docs.
 
-Its content is inspired by the _Credit Card Fraud
+The content of the document is inspired by the _Credit Card Fraud
 Detection_ dataset by Machine Learning Group of ULB (Université Libre de Bruxelles) retrieved from https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data in October 2023.
 
 The High-level design diagram was created using these icons:
