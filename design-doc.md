@@ -67,7 +67,7 @@ FunPay is considering a new internal service that would help prevent credit card
 <!--
 Why the problem is important to solve, and why now.
 Why should we solve this problem? Why now?
-Explain the motivation for your proposal and convince readers of its importance. What is the customer or business benefit? If you’re building a replacement system, explain why improvements to the existing system will not work as well. If there are alternatives, explain why your proposed system is better.
+Explain the motivation for your proposal and convince readers of its importance. What is the customer or business benefit? If you're building a replacement system, explain why improvements to the existing system will not work as well. If there are alternatives, explain why your proposed system is better.
 -->
 
 In the last few months, FunPay registered a significant increase in the number of fraudulent credit card transactions. All these frauds were reported by the users as the company does not have any fraud detection system in place. In most cases, the company had to refund the money to the users. In the other cases, the users lost their money. The last group of frauds are those caught neither by the company, nor by the users. These are estimated to be around 10% of all fraudulent transactions.
@@ -231,7 +231,7 @@ The data also contain untransformed transaction amount (in EUR; floating point n
 ### 5.3. Techniques
 
 <!--
-Outline the data science techniques you’ll try/tried. Include baselines for comparison.
+Outline the data science techniques you'll try/tried. Include baselines for comparison.
 What machine learning techniques will you use? How will you clean and prepare the data (e.g., excluding outliers) and create features?
 -->
 
@@ -242,7 +242,7 @@ Two baseline models should be included for comparison with more complicated mode
 ### 5.4. Experimentation & validation
 
 <!--
-Explain how you’ll evaluate models offline. Explain your choice of evaluation metrics(s).
+Explain how you'll evaluate models offline. Explain your choice of evaluation metrics(s).
 How will you validate your approach offline? What offline evaluation metrics will you use?
 
 If you're A/B testing, how will you assign treatment and control (e.g., customer vs. session-based) and what metrics will you measure? What are the success and [guardrail](https://medium.com/airbnb-engineering/designing-experimentation-guardrails-ed6a976ec669) metrics?
@@ -362,7 +362,7 @@ FunPay is a European company. As such, it is subject to the General Data Protect
 ### 6.7. Monitoring & alarms
 
 <!--
-How you’ll monitor your system performance. 
+How you'll monitor your system performance. 
 How will you log events in your system? What metrics will you monitor and how? Will you have alarms if a metric breaches a threshold or something else goes wrong? List the alarms that will trigger human intervention (e.g., on-call).
 -->
 
