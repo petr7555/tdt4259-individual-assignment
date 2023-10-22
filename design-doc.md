@@ -235,7 +235,7 @@ Outline the data science techniques you'll try/tried. Include baselines for comp
 What machine learning techniques will you use? How will you clean and prepare the data (e.g., excluding outliers) and create features?
 -->
 
-The data science team has received the data already pre-processed from the product team. The dataset does not have any missing values. Therefore, no imputation techniques need to be used. The dataset may contain some outliers. These will be removed using the Isolation Forest method. The dataset contains 29 features and the target variable. No further features need to be created.
+The data science team has received the data already pre-processed from the payment processing team. The dataset does not have any missing values. Therefore, no imputation techniques need to be used. The dataset may contain some outliers. These will be removed using the Isolation Forest method. The dataset contains 29 features and the target variable. No further features need to be created.
 
 Two baseline models should be included for comparison with more complicated models – one that classifies each transaction as non-fraudulent and the second one that uses Naive Bayes. Preliminary analysis has been conducted, and machine learning models such as Random Forest Classifier and Logistic Regression give good results. These models should be explored further. Lastly, it would be good to try solving the problem using neural networks.
 
@@ -282,6 +282,8 @@ Users will be able to set a maximum amount, up to which the transactions will be
 
 When a credit card transaction is considered fraudulent, users are notified. They can then review the transaction, and if they find that it was a false positive, they can still allow it. Optionally, they can choose to consider all future transactions from the given merchant as valid. This will minimize the inconvenience for the users.
 
+<div class="page-break"></div>
+
 ## 6. Implementation
 
 ### 6.1. High-level design
@@ -318,8 +320,8 @@ How will you host your system? On-premise, cloud, or hybrid? This will define th
 List the infra options and your final choice.
 -->
 
-FunPay operates its own private cloud, where most of the company's services are deployed.
-Deploying the fraud detection service there will make the deployment easier, scalable and will also result in lower costs compared to using a public cloud. Furthermore, the service will be accessible only from the other company's systems, ensuring data privacy.
+FunPay operates its private cloud, where most of the company's services are deployed.
+Deploying the fraud detection service there will make the deployment easier, scalable and will also result in lower costs compared to using a public cloud. Furthermore, the service will be accessible only from the other company's systems, ensuring security.
 
 The training will be done on virtual machines in this private cloud.
 
@@ -335,7 +337,7 @@ The system will be automatically horizontally scaled during request peaks.
 
 Having the fraud detection service deployed in the same environment as the payment processing system will minimize the communication latency.
 
-The model trained in Pycaret can be transpiler to other languages, such as C or Java. This will result in faster inference speed.
+A model trained in Pycaret can be transpiler to other languages, such as C or Java. This will result in faster inference speed.
 
 ### 6.5. Security
 
@@ -357,7 +359,7 @@ The service does not require authentication because all incoming requests have b
 How will you protect and ensure the privacy of customer data? Will your system be compliant with data retention and deletion policies (e.g., [GDPR](https://gdpr.eu/what-is-gdpr/))?
 -->
 
-FunPay is a European company. As such, it is subject to the General Data Protection Regulation (GDPR). However, the fraud detection service will not store any data about the users or their transactions. The service will be trained on and later process only numerical input variables, which are the result of a PCA transformation and the transaction amount.
+FunPay is a European company. As such, it is subject to the General Data Protection Regulation (GDPR). However, the fraud detection service will not store any data about the users or their transactions. The service will be trained on and later process only numerical input variables, which are the result of a PCA transformation, and the transaction amount.
 
 ### 6.7. Monitoring & alarms
 
@@ -395,6 +397,8 @@ there are few additional labor costs associated with the operation of the servic
 (2*10000+1000)/4000000 = 0.00525 EUR
 -->
 Assuming 4,000,000 transactions per month, the cost of the service is 0.005 EUR per transaction.
+
+<div class="page-break"></div>
 
 ### 6.9. Integration points
 
@@ -510,7 +514,7 @@ The template for this design document is based on:
 The content of the document is inspired by the _Credit Card Fraud
 Detection_ dataset by Machine Learning Group of ULB (Université Libre de Bruxelles) retrieved from https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data in October 2023.
 
-The High-level design diagram was created using these icons:
+The high-level design diagram was created using these icons:
 
 - ["Credit Card SVG Vector"](https://www.svgrepo.com/svg/513398/credit-card) by [Pixelbazaar](https://www.svgrepo.com/author/pixelbazaar/) is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - ["Cloud SVG Vector"](https://www.svgrepo.com/svg/113080/cloud) by [SVG Repo](https://www.svgrepo.com/) is licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
