@@ -13,6 +13,15 @@ const generatePdf = async () => {
     const allContent = onePagerContent + pageBreak + designDocContent;
 
     const pdf = await mdToPdf({content: allContent}, {
+        body_class: 'markdown-body',
+        css: `
+          .markdown-body {
+            font-size: 12px;
+          }
+          .markdown-body table {
+            font-size: 10px;
+          }
+        `,
         pdf_options: {
             format: 'A4',
             margin: {
